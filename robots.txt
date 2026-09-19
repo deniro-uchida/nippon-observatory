@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nippon-observatory.denirokobo.com/sitemap.xml

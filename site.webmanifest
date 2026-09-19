@@ -1,0 +1,25 @@
+{
+  "name": "ニッポン発生観測所",
+  "short_name": "発生観測所",
+  "description": "日本で起きている出来事を、年間統計から体感する観測インフォグラフィック。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#071221",
+  "theme_color": "#071221",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
