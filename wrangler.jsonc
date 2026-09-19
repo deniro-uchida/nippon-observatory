@@ -1,0 +1,15 @@
+{
+  "name": "nippon-observatory",
+  "compatibility_date": "2026-09-19",
+  "assets": {
+    "directory": ".",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    {
+      "pattern": "nippon-observatory.denirokobo.com",
+      "custom_domain": true
+    }
+  ]
+}
