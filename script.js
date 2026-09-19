@@ -369,6 +369,22 @@ let soundEnabled = true;
 let audioUnlocked = false;
 const activeVoices = [];
 const lastSoundAt = new Map();
+
+// ブラウザの自動再生制限を、ページ上の最初の操作で解除する。
+// サウンド設定は初期ONのまま保持し、操作前の自動発生だけ無音にする。
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  try {
+    audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+    if (audioContext.state === "suspended") audioContext.resume().catch(() => {});
+  } catch (_) {
+    // Web Audio API が使えない環境では、実音源の再生だけを試みる。
+  }
+}
+
+document.addEventListener("pointerdown", unlockAudio, {capture:true, once:true});
+document.addEventListener("keydown", unlockAudio, {capture:true, once:true});
 // 日本列島の上に重なるように設定した、おおまかな発生ゾーン（center基準の%）。
 // 正確な都道府県位置ではなく、列島の流れを感じるための演出用座標。
 const MAP_EFFECT_ZONES = [
@@ -605,7 +621,7 @@ OBSERVATION_ORDER.forEach((ev, index) => {
   tile.setAttribute("aria-label", `${ev.jp}の観測演出を再生`);
   tile.innerHTML = `<span class="ic" style="color:${ev.c}">${iconMarkup(ev)}</span><span class="jp">${ev.jp.replace("死亡（", "死亡 ").replace("）", "")}</span><span class="en">${ev.en}</span><span class="tile-rate">${formatRate(averageSeconds(ev), eventUnit(ev))}</span>`;
   tile.addEventListener("click", () => {
-    audioUnlocked = true;
+    unlockAudio();
     triggerMapEffect(ev, true);
   });
   tileByEventId.set(ev.id, tile);
@@ -624,8 +640,9 @@ for (let i = 0; i < 90; i++) {
 
 /* ---------- サウンド ---------- */
 $("#soundBtn").addEventListener("click", () => {
-  audioUnlocked = true;
+  unlockAudio();
   soundEnabled = !soundEnabled;
   $("#soundLbl").textContent = soundEnabled ? "サウンド ON" : "サウンド OFF";
+  $("#soundBtn").setAttribute("aria-pressed", String(soundEnabled));
   if (soundEnabled) playSound("click");
 });
